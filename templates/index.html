@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sales Predictor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Sales Prediction</h1>
+      <form method="POST">
+        <label for="state">State:</label>
+        <select id="state" name="state">
+          {% for state in states %}
+          <option value="{{ state }}">{{ state }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="city">City:</label>
+        <select id="city" name="city">
+          {% for city in cities %}
+          <option value="{{ city }}">{{ city }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="store_type">Store Type:</label>
+        <select id="store_type" name="store_type">
+          {% for store_type in store_types %}
+          <option value="{{ store_type }}">{{ store_type }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="cluster">Cluster:</label>
+        <select id="cluster" name="cluster">
+          {% for cluster in clusters %}
+          <option value="{{ cluster }}">{{ cluster }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="store_number">Store Number:</label>
+        <select id="store_number" name="store_number">
+          {% for store_number in store_numbers %}
+          <option value="{{ store_number }}">{{ store_number }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="family">Family:</label>
+        <select id="family" name="family">
+          {% for family in families %}
+          <option value="{{ family }}">{{ family }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="on_promotion">On Promotion:</label>
+        <input
+          type="number"
+          id="on_promotion"
+          name="on_promotion"
+          min="0"
+          required
+        />
+
+        <label for="transactions">Transactions:</label>
+        <input
+          type="number"
+          id="transactions"
+          name="transactions"
+          min="0"
+          required
+        />
+
+        <label for="oil_price">Oil Price:</label>
+        <input
+          type="number"
+          id="oil_price"
+          name="oil_price"
+          step="0.01"
+          required
+        />
+
+        <label for="selected_date">Date:</label>
+        <input type="date" id="selected_date" name="selected_date" required />
+
+        <button type="submit">Predict</button>
+      </form>
+    </div>
+    <script>
+      // Fetch cities when state changes
+      $("#state").change(function () {
+        var state = $(this).val();
+        $.ajax({
+          url: "/get_cities/" + state,
+          method: "GET",
+          success: function (response) {
+            var citySelect = $("#city");
+            citySelect.empty();
+            $.each(response.cities, function (index, city) {
+              citySelect.append(
+                '<option value="' + city + '">' + city + "</option>"
+              );
+            });
+            citySelect.change(); // Trigger change to update store types
+          },
+        });
+      });
+
+      // Fetch store types when city changes
+      $("#city").change(function () {
+        var state = $("#state").val();
+        var city = $(this).val();
+        $.ajax({
+          url: "/get_store_types/" + state + "/" + city,
+          method: "GET",
+          success: function (response) {
+            var storeTypeSelect = $("#store_type");
+            storeTypeSelect.empty();
+            $.each(response.store_types, function (index, store_type) {
+              storeTypeSelect.append(
+                '<option value="' + store_type + '">' + store_type + "</option>"
+              );
+            });
+            storeTypeSelect.change(); // Trigger change to update clusters
+          },
+        });
+      });
+
+      // Fetch clusters when store type changes
+      $("#store_type").change(function () {
+        var state = $("#state").val();
+        var city = $("#city").val();
+        var storeType = $(this).val();
+        $.ajax({
+          url: "/get_clusters/" + state + "/" + city + "/" + storeType,
+          method: "GET",
+          success: function (response) {
+            var clusterSelect = $("#cluster");
+            clusterSelect.empty();
+            $.each(response.clusters, function (index, cluster) {
+              clusterSelect.append(
+                '<option value="' + cluster + '">' + cluster + "</option>"
+              );
+            });
+            clusterSelect.change(); // Trigger change to update store numbers
+          },
+        });
+      });
+
+      // Fetch store numbers when cluster changes
+      $("#cluster").change(function () {
+        var state = $("#state").val();
+        var city = $("#city").val();
+        var storeType = $("#store_type").val();
+        var cluster = $(this).val();
+        $.ajax({
+          url:
+            "/get_store_numbers/" +
+            state +
+            "/" +
+            city +
+            "/" +
+            storeType +
+            "/" +
+            cluster,
+          method: "GET",
+          success: function (response) {
+            var storeNumberSelect = $("#store_number");
+            storeNumberSelect.empty();
+            $.each(response.store_numbers, function (index, store_number) {
+              storeNumberSelect.append(
+                '<option value="' +
+                  store_number +
+                  '">' +
+                  store_number +
+                  "</option>"
+              );
+            });
+          },
+        });
+      });
+
+      // Trigger initial change events to populate dependent fields
+      $("#state").change();
+    </script>
+  </body>
+</html>

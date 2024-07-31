@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prediction Result</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Predicted Sales</h1>
+      <p>
+        The predicted sales are:
+        <span class="highlight">{{ predicted_sales }}</span>
+      </p>
+      <a href="{{ url_for('index') }}" class="highlight">Back to Home</a>
+    </div>
+  </body>
+</html>
