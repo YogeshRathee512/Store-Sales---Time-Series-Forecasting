@@ -21,7 +21,7 @@ This project involves analyzing retail sales data to understand the impact of ho
 
 - 🔍 Exploratory Data Analysis (EDA) using bar plots, histograms, time series plots, boxplots, and pair plots.
 - 🧩 Comparative analysis of various regression models such as XGBoost, Linear Regression, Ridge, Lasso, Random Forest, and many more achieving an R² score of 0.93.
-- 🚀 Deployment of the model using Flask and Render.
+- 🚀 Created a pipeline for the model to apply preprocessing steps on input data and deploy using Flask and Render.
 
 ## 📂 Dataset
 
