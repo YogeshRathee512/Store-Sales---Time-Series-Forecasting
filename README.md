@@ -27,9 +27,6 @@ This project involves analyzing retail sales data to understand the impact of ho
 
 You can get the dataset [here](https://www.kaggle.com/competitions/store-sales-time-series-forecasting/data).
 
-## 📝 Kaggle notebook
-You can get the Notebook [here](https://www.kaggle.com/code/yogeshratheea/store-sales-project/edit/run/189284820).
-
 ## 📝 Requirements
 
 The requirements are specified in `requirements.txt`.
